@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nation_job_connect_admin/applications/screens/applications_screen.dart';
+import 'package:nation_job_connect_admin/widgets/common/confirm_dialog.dart';
 import 'package:nation_job_connect_admin/widgets/common/pick_a_date.dart';
 import 'package:nation_job_connect_admin/widgets/common/pick_a_time.dart';
 import '../../base/basic_fab_screen.dart';
@@ -34,10 +35,12 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen> with BasicFAB
   final _dbConnectShiftType = FirestoreShiftType();
 
   final _controllerNoOfVacanciesText = TextEditingController();
-  final _controllerNoOfHoursText = TextEditingController();
+  final _controllerWageText = TextEditingController();
 
   late DateTime date;
   late TimeOfDay time;
+  late DateTime endDate;
+  late TimeOfDay endTime;
   ShiftType? selectedShiftType;
 
   @override
@@ -134,36 +137,54 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen> with BasicFAB
                         SizedBox(
                           width: MediaQuery.of(context).size.width/2 - 10,
                           child: TextFormField(
-                              controller: _controllerNoOfHoursText,
+                              controller: _controllerWageText,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Shift type can not be empty";
+                                  return "Wage can not be empty";
                                 }
                                 return null;
                               },
                               style: const TextStyle(
                                   color: Color(ResColors.colorFontSplash),
                                   fontSize: ResDimensions.fontSizeDataEntry),
-                              decoration: Utils.getInputDecoration("No of Hours", null),
+                              decoration: Utils.getInputDecoration("Wage", null),
                               cursorColor: const Color(ResColors.colorFontSplash),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5,),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width/2 - 10,
-                          child: PickADate("Date", initialDate: DateTime.now(), onDatePicked: (selectedDate){
+                          child: PickADate("Start Date", initialDate: DateTime.now(), onDatePicked: (selectedDate){
                             date = selectedDate;
                           })
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width/2 - 10,
-                          child: PickATime("Time", initialTime: TimeOfDay.now(), onTimePicked: (selectedTime){
+                          child: PickATime("Start Time", initialTime: TimeOfDay.now(), onTimePicked: (selectedTime){
                             time = selectedTime;
+                          })
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width/2 - 10,
+                          child: PickADate("End Date", initialDate: DateTime.now(), onDatePicked: (selectedDate){
+                            endDate = selectedDate;
+                          })
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width/2 - 10,
+                          child: PickATime("End Time", initialTime: TimeOfDay.now(), onTimePicked: (selectedTime){
+                            endTime = selectedTime;
                           })
                         ),
                       ],
@@ -180,9 +201,16 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen> with BasicFAB
                           child: const Text('Publish'),
                           onPressed: (){
                             var dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute); 
-                            _dbConnect.publishVacancy(VacantShift("", nation: "uplands", 
-                            noOfVacancies: int.parse(_controllerNoOfVacanciesText.text), shiftType: selectedShiftType!.id, 
-                            shiftHours: double.parse(_controllerNoOfHoursText.text) , time: dateTime));
+                            var endDateTime = DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute); 
+                            _dbConnect.publishVacancy(VacantShift("", 
+                            nation: "uplands", 
+                            noOfVacancies: int.parse(_controllerNoOfVacanciesText.text.trim()), 
+                            shiftType: selectedShiftType!.id, 
+                            time: dateTime, 
+                            endTime: endDateTime, 
+                            wage: double.parse(_controllerWageText.text.trim()), 
+                            status: 1,
+                            ));
                             Navigator.pop(context);
                           },
                         ),
@@ -244,21 +272,57 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen> with BasicFAB
                         var shiftType = snapshotShiftType.data;
 
                         return GestureDetector(
-                        child: Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(5),
-                          decoration: const BoxDecoration(color: Color(ResColors.colorFontSplash), 
-                          borderRadius: BorderRadius.all(Radius.circular(5)),),
-                          child: Column(
-                            children: [
-                              // Text(nation!.name),
-                              Text("No of Vacancies: ${vacantShiftsList[i].noOfVacancies}"),
-                              Text("No of Shift Hours: ${vacantShiftsList[i].shiftHours}"),
-                              Text("Shift Type: ${shiftType!.type}"),
-                              Text("Time: ${vacantShiftsList[i].time}"),
-                            ],
+                          child: Dismissible(
+                            key: Key(vacantShiftsList[i].id),
+                            background: Container(),
+                            secondaryBackground: Container(
+                                color: Colors.red,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                alignment: Alignment.centerRight,
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              
+                            confirmDismiss: (direction) async {
+                              bool dismiss = false;
+                              if (direction == DismissDirection.endToStart) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ConfirmDialog(
+                                      "Confirm",
+                                      "Are you sure you want to delete the item",
+                                      onConfirm:() {
+                                        dismiss = true;
+                                        _dbConnect.deleteVacancy(vacantShiftsList[i].id);
+                                      }
+                                    );
+                                  });
+                              }else{
+                                dismiss = false;
+                              }
+                              return dismiss; 
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(5),
+                              decoration: const BoxDecoration(color: Color(ResColors.colorFontSplash), 
+                              borderRadius: BorderRadius.all(Radius.circular(5)),),
+                              child: Column(
+                                children: [
+                                  // Text(nation!.name),
+                                  Text("No of Vacancies: ${vacantShiftsList[i].noOfVacancies}"),
+                                  Text("Shift Type: ${shiftType!.type}"),
+                                  Text("Time: ${vacantShiftsList[i].time}"),
+                                  Text("End time: ${vacantShiftsList[i].endTime}"),
+                                  Text("Wage: ${vacantShiftsList[i].wage}"),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -299,3 +363,5 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen> with BasicFAB
     return "All Shifts";
   }
 }
+
+ typedef OnSwipe = Future<void> Function(String text);
