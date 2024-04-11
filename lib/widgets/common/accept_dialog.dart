@@ -10,7 +10,8 @@ class AcceptAlertDialog extends StatelessWidget {
   final String text;
   final OnButtonClick onReject;
   final OnButtonClick onAccept;
- const AcceptAlertDialog(this.title, this.text, {super.key, required this.onAccept, required this.onReject});
+  const AcceptAlertDialog(this.title, this.text,
+      {super.key, required this.onAccept, required this.onReject});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class AcceptAlertDialog extends StatelessWidget {
                     color: Color(ResColors.colorFontSplash))),
             child: Container(
               padding: const EdgeInsets.all(10),
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 5,
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
               child: Column(
@@ -52,13 +53,10 @@ class AcceptAlertDialog extends StatelessWidget {
                           Navigator.of(context).pop();
                         },
                       ),
-                      TransparentButton(
-                        "Accept",
-                        () {
-                          onAccept();
-                          Navigator.of(context).pop();
-                        }
-                      ),
+                      TransparentButton("Accept", () {
+                        onAccept();
+                        Navigator.of(context).pop();
+                      }),
                     ],
                   ),
                 ],
@@ -66,4 +64,5 @@ class AcceptAlertDialog extends StatelessWidget {
             )));
   }
 }
+
 typedef OnButtonClick = void Function();

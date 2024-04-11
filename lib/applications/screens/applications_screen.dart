@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nation_job_connect_admin/widgets/common/accept_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,7 +56,7 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen>
                   itemBuilder: (ctx, i) => GestureDetector(
                         child: Container(
                           margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             color: Color(myShiftsList[i].status == 0
                                 ? ResColors.colorYellow
@@ -63,30 +64,78 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen>
                                     ? ResColors.colorGreen
                                     : ResColors.colorRed)),
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
+                                const BorderRadius.all(Radius.circular(15)),
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(myShiftsList[i].applicantId),
-                              Text(
-                                  "Status: ${myShiftsList[i].status == 0 ? "Pending" : (myShiftsList[i].status == 1 ? "Approved" : "Rejected")}"),
-                              Text("Name: ${myShiftsList[i].name}"),
-                              InkWell(
-                                  child: const Text(
-                                    "FB Profile:",
-                                    style: TextStyle(color: Colors.blue),
+                              Row(
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.person_crop_circle,
+                                    size: 50,
                                   ),
-                                  onTap: () {
-                                    if (myShiftsList[i]
-                                        .fbProfile
-                                        .contains("https://www.")) {
-                                      launchUrl(
-                                          Uri.parse(myShiftsList[i].fbProfile));
-                                    } else {
-                                      launchUrl(Uri.parse(
-                                          "https://www.${myShiftsList[i].fbProfile}"));
-                                    }
-                                  })
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    myShiftsList[i].name,
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  InkWell(
+                                      child: Image.asset(
+                                        "assets/images/facebook.png",
+                                        width: 25,
+                                        height: 25,
+                                      ),
+                                      onTap: () {
+                                        if (myShiftsList[i]
+                                            .fbProfile
+                                            .contains("https://www.")) {
+                                          launchUrl(Uri.parse(
+                                              myShiftsList[i].fbProfile));
+                                        } else {
+                                          launchUrl(Uri.parse(
+                                              "https://www.${myShiftsList[i].fbProfile}"));
+                                        }
+                                      })
+                                ],
+                              ),
+                              // Text(myShiftsList[i].applicantId),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(65, 0, 0, 0),
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text(
+                                      "${myShiftsList[i].status == 0 ? "Pending" : (myShiftsList[i].status == 1 ? "Approved" : "Rejected")}",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              // InkWell(
+                              //     child: const Text(
+                              //       "FB Profile:",
+                              //       style: TextStyle(color: Colors.blue),
+                              //     ),
+                              //     onTap: () {
+                              //       if (myShiftsList[i]
+                              //           .fbProfile
+                              //           .contains("https://www.")) {
+                              //         launchUrl(
+                              //             Uri.parse(myShiftsList[i].fbProfile));
+                              //       } else {
+                              //         launchUrl(Uri.parse(
+                              //             "https://www.${myShiftsList[i].fbProfile}"));
+                              //       }
+                              //     })
                             ],
                           ),
                         ),
