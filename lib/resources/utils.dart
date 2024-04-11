@@ -18,13 +18,19 @@ class Utils {
     return "${time.hour}:${time.minute}";
   }
 
+  static String getTimeFromDate(DateTime date) {
+    DateFormat dateFormat = new DateFormat('HH:mm');
+    return dateFormat.format(date);
+  }
+
   static BoxDecoration getTextViewDecoration() {
     return BoxDecoration(
       color: const Color(ResColors.colorPrimaryDark),
       borderRadius:
           const BorderRadius.all(Radius.circular(ResDimensions.corner_radius)),
       border: Border.all(
-          width: 1.0, color: const Color(ResColors.colorPrimary).withOpacity(1)),
+          width: 1.0,
+          color: const Color(ResColors.colorPrimary).withOpacity(1)),
       // boxShadow: [
       //   BoxShadow(
       //     color: Colors.grey.withOpacity(0.2),
@@ -42,7 +48,8 @@ class Utils {
       borderRadius:
           const BorderRadius.all(Radius.circular(ResDimensions.corner_radius)),
       border: Border.all(
-          width: 1.0, color: const Color(ResColors.colorFontSplash).withOpacity(1)),
+          width: 1.0,
+          color: const Color(ResColors.colorFontSplash).withOpacity(1)),
       // boxShadow: [
       //   BoxShadow(
       //     color: Colors.grey.withOpacity(0.2),
@@ -94,13 +101,13 @@ class Utils {
             borderSide: BorderSide(color: Colors.red)));
   }
 
-  static Future<String?> getDeviceId() async{
+  static Future<String?> getDeviceId() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     String? deviceId;
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
       deviceId = androidInfo.id;
-    }else if(Platform.isIOS){
+    } else if (Platform.isIOS) {
       IosDeviceInfo iosDeviceInfo = await deviceInfoPlugin.iosInfo;
       deviceId = iosDeviceInfo.identifierForVendor;
     }
