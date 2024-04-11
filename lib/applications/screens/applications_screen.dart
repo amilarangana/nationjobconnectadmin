@@ -43,27 +43,14 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen> with BasicScreen
   
   @override
   Widget screenBody(BuildContext context) {
-  //Load the device id....
-   return FutureBuilder(
-      future: Utils.getDeviceId(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshotDeviceId) { 
-        var deviceId = snapshotDeviceId.data;
-          if (deviceId != null) {
 
-            //Load the user id....
-            return FutureBuilder(
-              future: _dbConnectUser.readUser(deviceId), 
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshotUser) {
-                User? user = snapshotUser.data;
-                if (user != null && user.id != null) {
-
-                  //load all user applied vacancies...
-                  return StreamBuilder<List<Application>>(
-                      stream: _dbConnectApplications.getApplications(widget.shiftId), 
-                      builder: (context, snapshotMyShifts) {
-                        if (snapshotMyShifts.connectionState == ConnectionState.active) {
-                          var myShiftsList = snapshotMyShifts.data;
-                          if (myShiftsList !=null && myShiftsList.isNotEmpty) {
+    //load all user applied vacancies...
+    return StreamBuilder<List<Application>>(
+    stream: _dbConnectApplications.getApplications(widget.shiftId), 
+    builder: (context, snapshotMyShifts) {
+      if (snapshotMyShifts.connectionState == ConnectionState.active) {
+        var myShiftsList = snapshotMyShifts.data;
+        if (myShiftsList !=null && myShiftsList.isNotEmpty) {
 
                             //Show list view of the applied shifts...
                             return ListView.builder(
@@ -78,7 +65,7 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen> with BasicScreen
                                         borderRadius: const BorderRadius.all(Radius.circular(5)),),
                                         child: Column(
                                           children: [
-                                            Text(myShiftsList[i].deviceId),
+                                            Text(myShiftsList[i].applicantId),
                                             Text("Status: ${myShiftsList[i].status == 0? "Pending":(myShiftsList[i].status == 1? "Approved": "Rejected")}"),
                                             Text("Name: ${myShiftsList[i].name}"),
                                             InkWell(child: const Text("FB Profile:", style: TextStyle(color: Colors.blue),), onTap:() {
@@ -117,14 +104,8 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen> with BasicScreen
                         }
         
                   });
-              }else{
-                return const NoData('No My shifts available');
-              }
-          });
-      }else{
-        return const NoData('No My shifts available');
-      }
-    });
+            
+    
     
   }
   
