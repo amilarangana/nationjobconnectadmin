@@ -4,8 +4,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../firebase/firestore_manage_application.dart';
 import '../../firebase/firestore_applications.dart';
 import '/firebase/firestore_user.dart';
-import '../../resources/utils.dart';
-import '../../user_profile/models/user.dart';
 import '../models/application.dart';
 import '../../resources/colors.dart';
 import '../../widgets/common/no_data.dart';
