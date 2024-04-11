@@ -59,7 +59,8 @@ class _PickADateState extends State<PickADate> {
         controller: controller,
         showCursor: false,
         readOnly: true,
-        style: const TextStyle(color: Color(ResColors.colorFontSplash), fontSize: 14),
+        style: const TextStyle(
+            color: Color(ResColors.colorFontSplash), fontSize: 14),
         decoration: InputDecoration(
             filled: true,
             fillColor: const Color(ResColors.colorPrimaryDark),
@@ -72,7 +73,8 @@ class _PickADateState extends State<PickADate> {
             labelText: widget.labalText,
             hintText: 'DD/MM/YYYY',
             hintStyle: const TextStyle(color: Color(ResColors.colorFontSplash)),
-            labelStyle: const TextStyle(color: Color(ResColors.colorFontSplash))),
+            labelStyle:
+                const TextStyle(color: Color(ResColors.colorFontSplash))),
         cursorColor: const Color(ResColors.colorFontSplash),
         onTap: () => _selectDate(context),
         onSubmitted: (_) => FocusScope.of(context).nextFocus(),

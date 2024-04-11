@@ -75,7 +75,14 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('Publish a Shift'),
+                    const Text(
+                      'Publish a Shift',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     FutureBuilder(
                       future: _dbConnectShiftType.readShiftTypeList(),
                       builder: (BuildContext context,
@@ -115,49 +122,55 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                       },
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2 - 10,
-                          child: TextFormField(
-                            controller: _controllerNoOfVacanciesText,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Shift type can not be empty";
-                              }
-                              return null;
-                            },
-                            style: const TextStyle(
-                                color: Color(ResColors.colorFontSplash),
-                                fontSize: ResDimensions.fontSizeDataEntry),
-                            decoration: Utils.getInputDecoration(
-                                "No of Vacancies", null),
-                            cursorColor: const Color(ResColors.colorFontSplash),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2 - 20,
+                            child: TextFormField(
+                              controller: _controllerNoOfVacanciesText,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Shift type can not be empty";
+                                }
+                                return null;
+                              },
+                              style: const TextStyle(
+                                  color: Color(ResColors.colorFontSplash),
+                                  fontSize: ResDimensions.fontSizeDataEntry),
+                              decoration: Utils.getInputDecoration(
+                                  "No of Vacancies", null),
+                              cursorColor:
+                                  const Color(ResColors.colorFontSplash),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2 - 10,
-                          child: TextFormField(
-                            controller: _controllerWageText,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Wage can not be empty";
-                              }
-                              return null;
-                            },
-                            style: const TextStyle(
-                                color: Color(ResColors.colorFontSplash),
-                                fontSize: ResDimensions.fontSizeDataEntry),
-                            decoration: Utils.getInputDecoration("Wage", null),
-                            cursorColor: const Color(ResColors.colorFontSplash),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2 - 20,
+                            child: TextFormField(
+                              controller: _controllerWageText,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Wage can not be empty";
+                                }
+                                return null;
+                              },
+                              style: const TextStyle(
+                                  color: Color(ResColors.colorFontSplash),
+                                  fontSize: ResDimensions.fontSizeDataEntry),
+                              decoration:
+                                  Utils.getInputDecoration("Wage", null),
+                              cursorColor:
+                                  const Color(ResColors.colorFontSplash),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -177,7 +190,7 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                             })),
                       ],
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -198,7 +211,7 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                       ],
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -206,6 +219,9 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                         ElevatedButton(
                           child: const Text('Cancel'),
                           onPressed: () => Navigator.pop(context),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         ElevatedButton(
                           child: const Text('Publish'),
