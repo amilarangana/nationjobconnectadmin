@@ -1,7 +1,7 @@
 class ResColors {
   static const colorPrimary = 0xffb4a7d5;
 
-  static const colorPrimaryDarker = 0xffea86b6;
+  static const colorPrimaryDarker = 0xffae76d4;
   static const colorPrimaryDark = 0xff000000;
 
   //font colors

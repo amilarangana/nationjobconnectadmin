@@ -80,7 +80,7 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     FutureBuilder(
@@ -220,7 +220,7 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                           child: const Text('Cancel'),
                           onPressed: () => Navigator.pop(context),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         ElevatedButton(

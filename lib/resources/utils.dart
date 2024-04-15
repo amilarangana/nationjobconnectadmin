@@ -25,7 +25,7 @@ class Utils {
 
   static BoxDecoration getTextViewDecoration() {
     return BoxDecoration(
-      color: const Color(ResColors.colorPrimaryDark),
+      color: const Color(ResColors.colorPrimaryDarker),
       borderRadius:
           const BorderRadius.all(Radius.circular(ResDimensions.corner_radius)),
       border: Border.all(
@@ -63,7 +63,7 @@ class Utils {
 
   static BoxDecoration getContainerDecoration() {
     return BoxDecoration(
-        color: const Color(ResColors.colorPrimaryDark),
+        color: const Color(ResColors.colorPrimaryDarker),
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         // border: Border.all(width: 1.5, color: Colors.white.withOpacity(1)),
         boxShadow: [
@@ -80,7 +80,7 @@ class Utils {
       String labalText, String? errorText) {
     return InputDecoration(
         filled: true,
-        fillColor: const Color(ResColors.colorPrimaryDark),
+        fillColor: Color.fromARGB(255, 174, 118, 211),
         enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(color: Color(ResColors.colorPrimary))),

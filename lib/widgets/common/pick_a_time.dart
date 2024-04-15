@@ -58,7 +58,7 @@ class _PickATimeState extends State<PickATime> {
         style: const TextStyle(color: Color(ResColors.colorFontSplash), fontSize: 14),
         decoration: InputDecoration(
             filled: true,
-            fillColor: const Color(ResColors.colorPrimaryDark),
+            fillColor: const Color(ResColors.colorPrimaryDarker),
             enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 borderSide: BorderSide(color: Color(ResColors.colorPrimary))),
