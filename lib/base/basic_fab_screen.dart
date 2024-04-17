@@ -11,6 +11,11 @@ mixin BasicFABScreen<Screen extends BaseScreen> on BaseState<Screen> {
 
   Widget fab() => Container();
 
+  void showSnackbar(String text){
+    ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text(text)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

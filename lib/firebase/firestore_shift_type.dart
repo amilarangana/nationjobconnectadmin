@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '/shift_type/data_access/idata_access_shift_type.dart';
 import '/shift_type/models/shift_type.dart';
 
-class FirestoreShiftType extends iDataAccessShiftType{
+class FirestoreShiftType extends IDataAccessShiftType{
 
   late FirebaseFirestore db;
 
@@ -26,5 +26,12 @@ class FirestoreShiftType extends iDataAccessShiftType{
       list.add(ShiftType.fromJson(element.id, element.data()));
      }
      return list;
+  }
+  
+  @override
+  Future<bool> addShiftType(ShiftType shiftType) {
+    return db
+        .collection('shift_types')
+        .add(shiftType.toJson()).then((ref) => true);
   }
 }

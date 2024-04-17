@@ -5,9 +5,14 @@ import './base_screen.dart';
 // import 'package:provider/provider.dart';
 
 mixin BasicScreen<Screen extends BaseScreen> on BaseState<Screen> {
-  final GlobalKey<ScaffoldState> _key = new GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   Widget screenBody(BuildContext context);
+
+  void showSnackbar(String text){
+    ScaffoldMessenger.of(context)
+      .showSnackBar(SnackBar(content: Text(text)));
+  }
 
   @override
   Widget build(BuildContext context) {

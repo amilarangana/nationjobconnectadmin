@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:nation_job_connect_admin/applications/screens/applications_screen.dart';
-import 'package:nation_job_connect_admin/widgets/common/confirm_dialog.dart';
+import 'package:nation_job_connect_admin/resources/strings.dart';
 import 'package:nation_job_connect_admin/widgets/common/pick_a_date.dart';
 import 'package:nation_job_connect_admin/widgets/common/pick_a_time.dart';
 import 'package:nation_job_connect_admin/widgets/common/vacant_shift_details.dart';
+import '../../authentication/store_credentials/auth_shared_prefs.dart';
 import '../../base/basic_fab_screen.dart';
-import '../../firebase/firestore_manage_application.dart';
 import '../../resources/dimensions.dart';
 import '../../resources/utils.dart';
 import '/firebase/firestore_nation.dart';
 import '/firebase/firestore_shift_type.dart';
-import '/firebase/firestore_user.dart';
+import '../../firebase/firestore_signin.dart';
 import '/nations/models/nation.dart';
 import '/shift_type/models/shift_type.dart';
 import '../../resources/colors.dart';
@@ -30,9 +30,10 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
     with BasicFABScreen {
   final _dbConnect = FirebaseConnect();
   final _dbConnectNation = FirestoreNation();
-  final _dbConnectApplication = FirestoreManageApplication();
-  final _dbConnectUser = FirestoreUser();
+  // final _dbConnectApplication = FirestoreManageApplication();
+  final _dbConnectUser = FirestoreSignin();
   final _dbConnectShiftType = FirestoreShiftType();
+  final _authShredPrefs = AuthSharedPrefs();
 
   final _controllerNoOfVacanciesText = TextEditingController();
   final _controllerWageText = TextEditingController();
@@ -47,7 +48,6 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
   void initState() {
     _dbConnect.dbConnect();
     _dbConnectNation.dbConnect();
-    _dbConnectApplication.dbConnect();
     _dbConnectUser.dbConnect();
     _dbConnectShiftType.dbConnect();
     super.initState();
@@ -236,16 +236,17 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
                                 endTime.minute);
                             _dbConnect.publishVacancy(VacantShift(
                               "",
-                              nation: "uplands",
+                              nation: _authShredPrefs.retrieveSavedUserCredentials()!.id,
                               noOfVacancies: int.parse(
                                   _controllerNoOfVacanciesText.text.trim()),
-                              shiftType: selectedShiftType!.id,
+                              shiftType: selectedShiftType!.id!,
                               time: dateTime,
                               endTime: endDateTime,
                               wage:
                                   double.parse(_controllerWageText.text.trim()),
                               status: 1,
                             ));
+                            showSnackbar(Strings.stringVacancyAdded);
                             Navigator.pop(context);
                           },
                         ),
@@ -280,8 +281,9 @@ class _VacantShiftScreenState extends BaseState<VacantShiftScreen>
   @override
   Widget screenBody(BuildContext context) {
     //load the all vacancies of all the nations as stream
+    var user = _authShredPrefs.retrieveSavedUserCredentials();
     return StreamBuilder<List<VacantShift>>(
-        stream: _dbConnect.getVacancies(),
+        stream: _dbConnect.getVacancies(user!.id),
         builder: (context, snapshotVacantShifts) {
           if (snapshotVacantShifts.connectionState == ConnectionState.active) {
             var vacantShiftsList = snapshotVacantShifts.data;

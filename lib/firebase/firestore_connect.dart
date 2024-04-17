@@ -12,9 +12,9 @@ class FirebaseConnect implements iDataAccess{
   }
 
   @override
-  Stream<List<VacantShift>> getVacancies() {
+  Stream<List<VacantShift>> getVacancies(String nationId) {
     return db.collection("vacant_shifts")
-    .where("nation", isEqualTo: 'uplands')
+    .where("nation", isEqualTo: nationId)
     .withConverter<VacantShift>(
       fromFirestore: (snapshot, options){
         return VacantShift.fromJson(snapshot.id, snapshot.data()!);

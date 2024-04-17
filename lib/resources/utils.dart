@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -19,9 +21,13 @@ class Utils {
   }
 
   static String getTimeFromDate(DateTime date) {
-    DateFormat dateFormat = new DateFormat('HH:mm');
+    DateFormat dateFormat = DateFormat('HH:mm');
     return dateFormat.format(date);
   }
+
+  static String generateMd5(String input) {
+  return md5.convert(utf8.encode(input)).toString();
+}
 
   static BoxDecoration getTextViewDecoration() {
     return BoxDecoration(

@@ -1,24 +1,33 @@
 class User{
-  late String? id;
-  final String deviceId;
+  late String id;
   final String name;
-  final String fbProfile;
+  final String username;
+  final String logo;
 
-  User({this.id, required this.deviceId, required this.name, required this.fbProfile});
+  User({required this.id, required this.name, required this.username, required this.logo});
 
   factory User.fromJson(String id, Map<String, dynamic> doc){
     return User(
       id: id, 
-      deviceId: doc['device_id'] as String, 
-      name: doc['name'] as String, 
-      fbProfile: doc['fb_profile'] as String);
+      name: doc['name'] as String,
+      username: doc['username'] as String, 
+      logo: doc['logo'] as String);
+  }
+
+  factory User.fromSPJson(Map<String, dynamic> doc){
+    return User(
+      id: doc['id'] as String, 
+      name: doc['name'] as String,
+      username: doc['username'] as String, 
+      logo: doc['logo'] as String);
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id' : id,
       'name' : name,
-      'device_id' : deviceId,
-      'fb_profile' : fbProfile
+      'username' : username,
+      'logo' : logo
     };
   }
 }

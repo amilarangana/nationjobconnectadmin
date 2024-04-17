@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nation_job_connect_admin/widgets/common/accept_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../firebase/firestore_manage_application.dart';
+// import '../../firebase/firestore_manage_application.dart';
 import '../../firebase/firestore_applications.dart';
-import '/firebase/firestore_user.dart';
+import '../../firebase/firestore_signin.dart';
 import '../models/application.dart';
 import '../../resources/colors.dart';
 import '../../widgets/common/no_data.dart';
@@ -24,14 +24,12 @@ class ApplicationsScreen extends BaseScreen {
 class _MyShiftScreenState extends BaseState<ApplicationsScreen>
     with BasicScreen {
   final _dbConnectApplications = FirestoreApplications();
-  final _dbConnectApplication = FirestoreManageApplication();
-  final _dbConnectUser = FirestoreUser();
+  // final _dbConnectApplication = FirestoreManageApplication();
 
   @override
   void initState() {
     _dbConnectApplications.dbConnect();
-    _dbConnectApplication.dbConnect();
-    _dbConnectUser.dbConnect();
+    // _dbConnectApplication.dbConnect();
     super.initState();
   }
 
@@ -64,76 +62,60 @@ class _MyShiftScreenState extends BaseState<ApplicationsScreen>
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
                             children: [
-                              Row(
+                              const Icon(
+                                CupertinoIcons.person_crop_circle,
+                                size: 50,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    CupertinoIcons.person_crop_circle,
-                                    size: 50,
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
                                   Text(
                                     myShiftsList[i].name,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 17,
                                     ),
                                   ),
-                                  Spacer(),
-                                  InkWell(
-                                      child: Image.asset(
-                                        "assets/images/facebook.png",
-                                        width: 25,
-                                        height: 25,
+                                  myShiftsList[i].membershipNo != null ? Text(
+                                    myShiftsList[i].membershipNo ?? "",
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ) : Container(),
+                                  Container(
+                                    color: Colors.black,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Text(
+                                        myShiftsList[i].status == 0 ? "Pending" : (myShiftsList[i].status == 1 ? "Approved" : "Rejected"),
+                                        style: const TextStyle(color: Colors.white),
                                       ),
-                                      onTap: () {
-                                        if (myShiftsList[i]
-                                            .fbProfile
-                                            .contains("https://www.")) {
-                                          launchUrl(Uri.parse(
-                                              myShiftsList[i].fbProfile));
-                                        } else {
-                                          launchUrl(Uri.parse(
-                                              "https://www.${myShiftsList[i].fbProfile}"));
-                                        }
-                                      })
+                                    ),
+                                  )
                                 ],
                               ),
-                              // Text(myShiftsList[i].applicantId),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(65, 0, 0, 0),
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Text(
-                                      "${myShiftsList[i].status == 0 ? "Pending" : (myShiftsList[i].status == 1 ? "Approved" : "Rejected")}",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
+                              const Spacer(),
+                              myShiftsList[i]
+                                        .fbProfile != null ? InkWell(
+                                  child: Image.asset(
+                                    "assets/images/facebook.png",
+                                    width: 25,
+                                    height: 25,
                                   ),
-                                  color: Colors.black,
-                                ),
-                              ),
-
-                              // InkWell(
-                              //     child: const Text(
-                              //       "FB Profile:",
-                              //       style: TextStyle(color: Colors.blue),
-                              //     ),
-                              //     onTap: () {
-                              //       if (myShiftsList[i]
-                              //           .fbProfile
-                              //           .contains("https://www.")) {
-                              //         launchUrl(
-                              //             Uri.parse(myShiftsList[i].fbProfile));
-                              //       } else {
-                              //         launchUrl(Uri.parse(
-                              //             "https://www.${myShiftsList[i].fbProfile}"));
-                              //       }
-                              //     })
+                                  onTap: () {
+                                    var fbLink = myShiftsList[i].fbProfile;
+                                    if (fbLink!.contains("https://www.")) {
+                                      launchUrl(Uri.parse(
+                                          fbLink));
+                                    } else {
+                                      launchUrl(Uri.parse(
+                                          "https://www.${fbLink}"));
+                                    }
+                                  }) : Container()
                             ],
                           ),
                         ),

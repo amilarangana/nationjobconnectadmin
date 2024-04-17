@@ -20,7 +20,7 @@ class Application{
       'vacancy_id' : vacancyId,
       'nation': nation.toShortJson(),
       'time': time,
-      'shift_type' : shiftType.toJson(),
+      'shift_type' : shiftType.toShortJson(),
       'no_of_hours' : shiftHours,
       'status' : 0
     };

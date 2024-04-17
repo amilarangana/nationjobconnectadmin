@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'authentication/store_credentials/auth_shared_prefs.dart';
 import 'firebase_options.dart';
 import 'splash/splash_screen.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await AuthSharedPrefs().init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); 

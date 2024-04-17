@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '/user_profile/data_access/idata_access_user.dart';
+import 'package:nation_job_connect_admin/authentication/data_access/idata_access_signin.dart';
 import '/user_profile/models/user.dart';
 
-class FirestoreUser extends iDataAccessUser{
+class FirestoreSignin extends iDataAccessSignin{
 
   late FirebaseFirestore db;
 
@@ -12,22 +12,16 @@ class FirestoreUser extends iDataAccessUser{
   }
 
   @override
-  Future<User?> readUser(String deviceId) async {
+  Future<User?> signinUser(String username, String password) async {
     var querySnapshot = 
-      await db.collection("app-users")
-              .where('device_id', isEqualTo: deviceId)
+      await db.collection("nations")
+              .where('username', isEqualTo: username)
+              .where('password', isEqualTo: password)
               .get();
       if (querySnapshot.size > 0) {
         return User.fromJson(querySnapshot.docs[0].id, querySnapshot.docs[0].data());
       }else{
         return null;
       }
-  }
-
-  @override
-  Future<String> saveUser(User user) {
-      return db
-        .collection('app-users')
-        .add(user.toJson()).then((ref) => ref.id);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nation_job_connect_admin/user_profile/screens/profile_screen.dart';
 import 'package:nation_job_connect_admin/widgets/common/coming_soon_view.dart';
 import '/vacant_shifts/screens/vacant_shifts_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -22,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
       VacantShiftScreen(),
       // VacantShiftScreen(),
       // VacantShiftScreen(),
-      ComingSoonView(),
+      ProfileScreen(),
       // VacantShiftScreen(),
     ];
     super.initState();
